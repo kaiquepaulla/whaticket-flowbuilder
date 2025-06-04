@@ -1,21 +1,11 @@
-##REQUESITOS 
+Comandos:
+```
+git clone https://github.com/apouaoui/whaticket-flowbuilder.git
+cd whaticket-flowbuilder
+sudo chmod +x instalador
+sudo ./instalador
 
--UBUNTU 20.04 (OBRIGATORIO)
--VM COM MINIMO: 2CPU 4GB RAM
--VM COM RECOMENDADO: 4CPU 6GB RAM
-
-
-## CRIAR SUBDOMINIO E APONTAR PARA O IP DA SUA VPS ##
-
-FRONTEND_URL: app.seudominio.com
-BACKEND_URL:  api.seudominio.com
-
-## CHECAR PROPAGAÇÃO DO DOMÍNIO ##
-
-https://dnschecker.org/
-
-## COPIAR A PASTA PARA ROOT E RODAR OS COMANDOS ABAIXO no Seu SERVIDOR SSH ##
-
+```
 cd ./whaticket
 sudo chmod +x instalador
 sudo ./instalador
