@@ -10,6 +10,8 @@ cd ./whaticket
 sudo chmod +x instalador
 sudo ./instalador
 
+Funcional
+
 ===================================================
 
 login: admin@admin.com
