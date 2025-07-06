@@ -9,17 +9,38 @@
 #######################################
 system_create_user() {
   print_banner
-  printf "${WHITE} 💻 Agora, vamos criar o usuário para a instancia...${GRAY_LIGHT}"
-  printf "\n\n"
+  printf "${WHITE} 💻 Agora, vamos criar o usuário para a instância...${GRAY_LIGHT}\n\n"
 
-  sleep 2
+  sleep 1
 
-  sudo su - root <<EOF
-  useradd -m -p $(openssl passwd -crypt ${deploy_password}) -s /bin/bash -G sudo deploy
-  usermod -aG sudo deploy
-EOF
+  # Verifica se a variável está definida
+  if [[ -z "${deploy_password}" ]]; then
+    echo -e "${RED}❌ Variável 'deploy_password' não está definida.${GRAY_LIGHT}"
+    return 1
+  fi
 
-  sleep 2
+  # Nome do usuário
+  local username="deploy"
+
+  # Verifica se o usuário já existe
+  if id "$username" &>/dev/null; then
+    echo -e "${YELLOW}⚠️ Usuário '$username' já existe. Pulando criação.${GRAY_LIGHT}"
+  else
+    echo -e "${BLUE}🔐 Criando usuário '$username' com permissão de sudo...${GRAY_LIGHT}"
+
+    # Cria o usuário com diretório home e shell bash
+    sudo adduser --disabled-password --gecos "" "$username"
+
+    # Define a senha
+    echo "$username:$deploy_password" | sudo chpasswd
+
+    # Adiciona ao grupo sudo
+    sudo usermod -aG sudo "$username"
+
+    echo -e "${GREEN}✅ Usuário '$username' criado com sucesso.${GRAY_LIGHT}"
+  fi
+
+  sleep 1
 }
 
 #######################################
