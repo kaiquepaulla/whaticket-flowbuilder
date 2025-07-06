@@ -1,6 +1,6 @@
 Comandos:
 ```
-git clone https://github.com/apouaoui/whaticket-flowbuilder.git
+git clone https://github.com/kaiquepaulla/whaticket-flowbuilder.git
 cd whaticket-flowbuilder
 sudo chmod +x instalador
 sudo ./instalador
