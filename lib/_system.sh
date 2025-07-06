@@ -11,36 +11,32 @@ system_create_user() {
   print_banner
   printf "${WHITE} 💻 Agora, vamos criar o usuário para a instância...${GRAY_LIGHT}\n\n"
 
-  sleep 1
+  sleep 2
 
   # Verifica se a variável está definida
   if [[ -z "${deploy_password}" ]]; then
-    echo -e "${RED}❌ Variável 'deploy_password' não está definida.${GRAY_LIGHT}"
+    printf "${RED} ❌ A variável 'deploy_password' não está definida.\n"
     return 1
   fi
 
-  # Nome do usuário
-  local username="deploy"
-
-  # Verifica se o usuário já existe
-  if id "$username" &>/dev/null; then
-    echo -e "${YELLOW}⚠️ Usuário '$username' já existe. Pulando criação.${GRAY_LIGHT}"
+  if id "deploy" &>/dev/null; then
+    printf "${YELLOW} ⚠️  O usuário 'deploy' já existe. Pulando criação...\n"
   else
-    echo -e "${BLUE}🔐 Criando usuário '$username' com permissão de sudo...${GRAY_LIGHT}"
-
-    # Cria o usuário com diretório home e shell bash
-    sudo adduser --disabled-password --gecos "" "$username"
+    # Cria o usuário com shell bash e adiciona ao grupo sudo
+    sudo useradd -m -s /bin/bash -G sudo deploy
 
     # Define a senha
-    echo "$username:$deploy_password" | sudo chpasswd
+    echo "deploy:${deploy_password}" | sudo chpasswd
 
-    # Adiciona ao grupo sudo
-    sudo usermod -aG sudo "$username"
-
-    echo -e "${GREEN}✅ Usuário '$username' criado com sucesso.${GRAY_LIGHT}"
+    # Verifica se foi criado
+    if id "deploy" &>/dev/null; then
+      printf "${GREEN} ✅ Usuário 'deploy' criado com sucesso!\n"
+    else
+      printf "${RED} ❌ Erro ao criar o usuário 'deploy'.\n"
+    fi
   fi
 
-  sleep 1
+  sleep 2
 }
 
 #######################################
